@@ -31,6 +31,8 @@ namespace XR.Mono.Cover
 
         public CodeRecordData DataStore { get; set; }
 
+        public bool HitCount { get; set; } = true;
+
 
         long logcount = 0;
 
@@ -239,6 +241,10 @@ namespace XR.Mono.Cover
                         if ( bp.Location.LineNumber == bp.Record.GetFirstLine() ) {
                             rec.CallCount++;
                         }
+
+                        if (!HitCount) {
+							bpe.Request.Disable ();
+                        }
                     }
 
                 }
@@ -393,7 +399,7 @@ namespace XR.Mono.Cover
             using (var f = new StreamWriter( filename )) {
                 var rv = records.Values.ToArray ();
                 Array.Sort (rv, (CodeRecord x, CodeRecord y) => {
-                    var xa = string.Format (x.ClassName + "\t:" + x.Name);
+                    var xa = string.Format (x.ClassName + ":" + x.Name);
                     var ya = string.Format (y.ClassName + ":" + y.Name);
 
                     return xa.CompareTo (ya);
